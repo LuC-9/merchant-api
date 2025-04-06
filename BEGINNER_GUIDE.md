@@ -1,4 +1,4 @@
-# Complete Beginner's Guide to Merchant Management System 🎓
+# Complete Beginner's Guide to a basic CRUD System 🎓
 
 ## Part 1: The Basics First 📚
 
