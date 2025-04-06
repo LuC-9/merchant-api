@@ -5,7 +5,6 @@ import com.merchant.api.security.JwtAuthenticationFilter;
 import com.merchant.api.security.JwtService;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
 import io.swagger.v3.oas.annotations.security.SecurityScheme;
-import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -24,7 +23,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
-@RequiredArgsConstructor
 @SecurityScheme(
     name = "bearerAuth",
     type = SecuritySchemeType.HTTP,
@@ -35,6 +33,11 @@ public class SecurityConfig {
 
     private final MerchantRepository merchantRepository;
     private final JwtService jwtService;
+
+    public SecurityConfig(MerchantRepository merchantRepository, JwtService jwtService) {
+        this.merchantRepository = merchantRepository;
+        this.jwtService = jwtService;
+    }
 
     @Bean
     public UserDetailsService userDetailsService() {
@@ -57,7 +60,7 @@ public class SecurityConfig {
         http
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/v1/auth/**", "/swagger-ui/**", "/api-docs/**").permitAll()
+                .requestMatchers("/api/v1/auth/**", "/swagger-ui/**", "/api-docs/**", "/v3/api-docs/**").permitAll()
                 .anyRequest().authenticated()
             )
             .sessionManagement(session -> session

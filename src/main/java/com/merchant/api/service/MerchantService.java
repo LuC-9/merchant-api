@@ -3,18 +3,23 @@ package com.merchant.api.service;
 import com.merchant.api.model.Merchant;
 import com.merchant.api.repository.MerchantRepository;
 import jakarta.persistence.EntityNotFoundException;
-import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
+@Transactional
 public class MerchantService {
 
     private final MerchantRepository merchantRepository;
     private final PasswordEncoder passwordEncoder;
+
+    public MerchantService(MerchantRepository merchantRepository, PasswordEncoder passwordEncoder) {
+        this.merchantRepository = merchantRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
 
     public List<Merchant> getAllMerchants() {
         return merchantRepository.findAll();

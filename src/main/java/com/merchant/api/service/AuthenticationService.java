@@ -2,7 +2,6 @@ package com.merchant.api.service;
 
 import com.merchant.api.model.Merchant;
 import com.merchant.api.security.JwtService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.User;
@@ -13,13 +12,21 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 
 @Service
-@RequiredArgsConstructor
 @Transactional
 public class AuthenticationService {
 
     private final MerchantService merchantService;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
+
+    public AuthenticationService(
+            MerchantService merchantService,
+            JwtService jwtService,
+            AuthenticationManager authenticationManager) {
+        this.merchantService = merchantService;
+        this.jwtService = jwtService;
+        this.authenticationManager = authenticationManager;
+    }
 
     public String login(String email, String password) {
         authenticationManager.authenticate(
