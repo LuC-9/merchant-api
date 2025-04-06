@@ -1,4 +1,4 @@
-# Mastery Roadmap: Merchant Management System 🎯
+# Mastery Roadmap: Merchant Management System or any similar Implementation🎯
 
 ## Level 1: Foundation (Week 1-2) 🌱
 
