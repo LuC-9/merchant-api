@@ -2,6 +2,7 @@ package com.merchant.api.config;
 
 import com.merchant.api.repository.MerchantRepository;
 import com.merchant.api.security.JwtAuthenticationFilter;
+import com.merchant.api.security.JwtService;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
 import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import lombok.RequiredArgsConstructor;
@@ -32,8 +33,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 )
 public class SecurityConfig {
 
-    private final JwtAuthenticationFilter jwtAuthFilter;
     private final MerchantRepository merchantRepository;
+    private final JwtService jwtService;
 
     @Bean
     public UserDetailsService userDetailsService() {
@@ -44,6 +45,11 @@ public class SecurityConfig {
                     java.util.Collections.emptyList()
                 ))
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+    }
+
+    @Bean
+    public JwtAuthenticationFilter jwtAuthenticationFilter() {
+        return new JwtAuthenticationFilter(jwtService, userDetailsService());
     }
 
     @Bean
@@ -58,7 +64,7 @@ public class SecurityConfig {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             )
             .authenticationProvider(authenticationProvider())
-            .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+            .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }

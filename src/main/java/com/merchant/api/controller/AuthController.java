@@ -5,7 +5,6 @@ import com.merchant.api.service.AuthenticationService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,11 +13,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/v1/auth")
-@RequiredArgsConstructor
 @Tag(name = "Authentication", description = "Authentication management APIs")
 public class AuthController {
 
     private final AuthenticationService authService;
+
+    public AuthController(AuthenticationService authService) {
+        this.authService = authService;
+    }
 
     @PostMapping("/register")
     @Operation(
@@ -38,5 +40,5 @@ public class AuthController {
         return ResponseEntity.ok(authService.login(request.email(), request.password()));
     }
 
-    record LoginRequest(String email, String password) {}
+    public record LoginRequest(String email, String password) {}
 } 
