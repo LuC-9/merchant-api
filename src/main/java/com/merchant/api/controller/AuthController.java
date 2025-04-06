@@ -1,5 +1,6 @@
 package com.merchant.api.controller;
 
+import com.merchant.api.dto.MerchantRegistrationRequest;
 import com.merchant.api.model.Merchant;
 import com.merchant.api.service.AuthenticationService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -27,8 +28,19 @@ public class AuthController {
         summary = "Register a new merchant",
         description = "Register a new merchant and return JWT token"
     )
-    public ResponseEntity<String> register(@Valid @RequestBody Merchant request) {
-        return ResponseEntity.ok(authService.register(request));
+    public ResponseEntity<String> register(@Valid @RequestBody MerchantRegistrationRequest request) {
+        Merchant merchant = new Merchant();
+        merchant.setBusinessName(request.getBusinessName());
+        merchant.setEmail(request.getEmail());
+        merchant.setPassword(request.getPassword());
+        merchant.setPhoneNumber(request.getPhoneNumber());
+        merchant.setAddress(request.getAddress());
+        merchant.setBusinessType(request.getBusinessType());
+        merchant.setRegistrationNumber(request.getRegistrationNumber());
+        merchant.setTaxId(request.getTaxId());
+        merchant.setActive(true);
+        
+        return ResponseEntity.ok(authService.register(merchant));
     }
 
     @PostMapping("/login")

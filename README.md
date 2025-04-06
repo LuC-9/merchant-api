@@ -4,13 +4,13 @@ A Spring Boot application for managing merchants with JWT authentication and Pos
 
 ## Features
 
-- Merchant Login
-- Merchant Registration
-- JWT Authentication
-- Data Masking (Sensitive Data)
+- Merchant Authentication (Login/Register)
+- JWT Token Based Security
+- Complete Merchant CRUD Operations
+- Data Validation
 - PostgreSQL Database Integration
-- Complete CRUD Operations
 - Swagger API Documentation
+- Password Encryption
 
 ## Prerequisites
 
@@ -52,27 +52,116 @@ mvn spring-boot:run
 
 Once the application is running, you can access:
 - Swagger UI: http://localhost:8080/swagger-ui.html
-- API Docs: http://localhost:8080/api-docs
+- API Docs: http://localhost:8080/v3/api-docs
 
-## API Endpoints
+## Authentication
 
-### Authentication
-- POST `/api/v1/auth/register` - Register new merchant
-- POST `/api/v1/auth/login` - Login merchant
+### Register New Merchant
+```http
+POST /api/v1/auth/register
+```
+Request body:
+```json
+{
+  "businessName": "Example Business",
+  "email": "example@business.com",
+  "password": "securepassword",
+  "phoneNumber": "1234567890",
+  "address": "123 Business St",
+  "businessType": "Retail",
+  "registrationNumber": "REG123",
+  "taxId": "TAX123"
+}
+```
+Response: JWT token
 
-### Merchant Operations (Requires JWT)
-- GET `/api/v1/merchants` - Get all merchants
-- GET `/api/v1/merchants/{id}` - Get merchant by ID
-- POST `/api/v1/merchants` - Create new merchant
-- PUT `/api/v1/merchants/{id}` - Update merchant
-- DELETE `/api/v1/merchants/{id}` - Delete merchant
+### Login
+```http
+POST /api/v1/auth/login
+```
+Request body:
+```json
+{
+  "email": "example@business.com",
+  "password": "securepassword"
+}
+```
+Response: JWT token
 
-## Security
+## Protected Endpoints
+
+All the following endpoints require JWT authentication. Add the JWT token to the Authorization header:
+```
+Authorization: Bearer your_jwt_token_here
+```
+
+### Get All Merchants
+```http
+GET /api/v1/merchants
+```
+Returns a list of all merchants.
+
+### Get Merchant by ID
+```http
+GET /api/v1/merchants/{id}
+```
+Returns details of a specific merchant.
+
+### Create New Merchant
+```http
+POST /api/v1/merchants
+```
+Request body:
+```json
+{
+  "businessName": "New Business",
+  "email": "new@business.com",
+  "password": "securepassword",
+  "phoneNumber": "1234567890",
+  "address": "456 Business Ave",
+  "businessType": "Service",
+  "registrationNumber": "REG456",
+  "taxId": "TAX456"
+}
+```
+
+### Update Merchant
+```http
+PUT /api/v1/merchants/{id}
+```
+Request body: Same as create merchant
+
+### Delete Merchant
+```http
+DELETE /api/v1/merchants/{id}
+```
+Deletes a merchant by ID.
+
+## Security Features
 
 - JWT based authentication
 - Password encryption using BCrypt
-- Protected endpoints
 - Input validation
+- Protected endpoints
+- Stateless session management
+
+## Using Swagger UI
+
+1. Open Swagger UI at http://localhost:8080/swagger-ui.html
+2. Register a new merchant using `/api/v1/auth/register`
+3. Login using `/api/v1/auth/login` to get JWT token
+4. Click the "Authorize" button at the top
+5. Enter your JWT token as: `Bearer your_token_here`
+6. Now you can test all protected endpoints
+
+## Error Handling
+
+The API includes comprehensive error handling for:
+- Invalid input validation
+- Duplicate email addresses
+- Entity not found
+- Authentication failures
+- Authorization failures
 
 ## Contributing
 
