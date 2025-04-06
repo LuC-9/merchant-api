@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -47,7 +48,8 @@ public class MerchantController {
         description = "Create a new merchant with the provided details"
     )
     public ResponseEntity<Merchant> createMerchant(@Valid @RequestBody Merchant merchant) {
-        return ResponseEntity.ok(merchantService.createMerchant(merchant));
+        Merchant createdMerchant = merchantService.createMerchant(merchant);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdMerchant);
     }
 
     @PutMapping("/{id}")

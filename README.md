@@ -73,7 +73,9 @@ Request body:
   "taxId": "TAX123"
 }
 ```
-Response: JWT token
+Response: 
+- Status: 201 CREATED
+- Body: JWT token
 
 ### Login
 ```http
@@ -86,7 +88,9 @@ Request body:
   "password": "securepassword"
 }
 ```
-Response: JWT token
+Response:
+- Status: 200 OK
+- Body: JWT token
 
 ## Protected Endpoints
 
@@ -99,13 +103,18 @@ Authorization: Bearer your_jwt_token_here
 ```http
 GET /api/v1/merchants
 ```
-Returns a list of all merchants.
+Response:
+- Status: 200 OK
+- Body: Array of merchant objects
 
 ### Get Merchant by ID
 ```http
 GET /api/v1/merchants/{id}
 ```
-Returns details of a specific merchant.
+Response:
+- Status: 200 OK
+- Body: Merchant object
+- Status: 404 Not Found (if merchant doesn't exist)
 
 ### Create New Merchant
 ```http
@@ -124,6 +133,9 @@ Request body:
   "taxId": "TAX456"
 }
 ```
+Response:
+- Status: 201 CREATED
+- Body: Created merchant object
 
 ### Update Merchant
 ```http
@@ -131,11 +143,18 @@ PUT /api/v1/merchants/{id}
 ```
 Request body: Same as create merchant
 
+Response:
+- Status: 200 OK
+- Body: Updated merchant object
+- Status: 404 Not Found (if merchant doesn't exist)
+
 ### Delete Merchant
 ```http
 DELETE /api/v1/merchants/{id}
 ```
-Deletes a merchant by ID.
+Response:
+- Status: 204 NO CONTENT
+- Status: 404 Not Found (if merchant doesn't exist)
 
 ## Security Features
 
@@ -157,11 +176,11 @@ Deletes a merchant by ID.
 ## Error Handling
 
 The API includes comprehensive error handling for:
-- Invalid input validation
-- Duplicate email addresses
-- Entity not found
-- Authentication failures
-- Authorization failures
+- Invalid input validation (400 Bad Request)
+- Duplicate email addresses (409 Conflict)
+- Entity not found (404 Not Found)
+- Authentication failures (401 Unauthorized)
+- Authorization failures (403 Forbidden)
 
 ## Contributing
 

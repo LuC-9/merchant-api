@@ -6,6 +6,7 @@ import com.merchant.api.service.AuthenticationService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -40,7 +41,8 @@ public class AuthController {
         merchant.setTaxId(request.getTaxId());
         merchant.setActive(true);
         
-        return ResponseEntity.ok(authService.register(merchant));
+        String token = authService.register(merchant);
+        return ResponseEntity.status(HttpStatus.CREATED).body(token);
     }
 
     @PostMapping("/login")
